@@ -1,9 +1,23 @@
 const express = require("express")
 const app = express();
 
-app.get("/radha",(req , res) =>{
-     res.send("Radha get")
-})
+
+// app.use('/user', [rh , rh], rh, rh, rh, [rh, rh]) // you can write as many as route handler as you want
+// also you can wrapp up then on a array
+app.get("/radha",(req , res, next) =>{
+    //  res.send("Radha get Radha")
+    next()
+     console.log("Radha 1")
+     res.send("Ram Ram")
+    
+    //  next() 
+},
+// next(),
+    (req,res) =>{
+        console.log("Radha 2");
+        res.send("Radha Radha")
+    }
+)
 
 
 //! Dynamic route
