@@ -4,28 +4,66 @@ const app = express();
 app.get("/radha",(req , res) =>{
      res.send("Radha get")
 })
-app.put("/radha",(req , res) =>{
-     res.send("Radha put")
-})
-app.delete("/radha",(req , res) =>{
-     res.send("Sandip delete call")
-})
-app.post("/radha",(req , res) =>{
-     res.send("Radha Post call")
-})
-app.patch("/radha",(req , res) =>{
-     res.send("Radha patch with krishna")
-})
-app.head("/radha",(req , res) =>{
-     res.send("Radha head")
-})
-app.options("/radha",(req , res) =>{
-     res.send("Radha options")
+
+
+//! Dynamic route
+app.get("/radha/:name",(req , res) =>{
+    console.log(req.params);
+    res.send("Radha get")
 })
 
-app.use("/",(req , res) =>{
-     res.send("Krishna Krishna")
+//! Multiple dynamic route
+app.get("/radha/:name/:password",(req , res) =>{
+    console.log(req.params);
+    res.send("Radha get")
 })
+
+//! Different type of routing
+//Here we can add as many 'b' in route like abc, abbbc etc, but abbbcc and aabbbbbbbbbbc (double 'c' or 'a') will be invalid route
+app.get("/ab+c",(req , res) =>{
+    console.log(req.params);
+    res.send("Radha get")
+})
+
+//Here we can add as many 'b' after 'b' and 'c' after 'c' in route like abc, abbbcc etc, but aabbbcc and  (double 'a') will be invalid route
+app.get("/ab*c",(req , res) =>{
+    console.log(req.params);
+    res.send("Radha get")
+})
+
+app.get("/a(bb)c",(req , res) =>{
+    console.log(req.params);
+    res.send("Radha get")
+})
+
+// It will work for any route which will end with fly like butterfly, nnssnfly etc
+app.get(/.*fly/,(req , res) =>{
+    console.log(req.params);
+    res.send("Radha get")
+})
+
+// app.put("/radha",(req , res) =>{
+//      res.send("Radha put")
+// })
+// app.delete("/radha",(req , res) =>{
+//      res.send("Sandip delete call")
+// })
+// app.post("/radha",(req , res) =>{
+//      res.send("Radha Post call")
+// })
+// app.patch("/radha",(req , res) =>{
+//      res.send("Radha patch with krishna")
+// })
+// app.head("/radha",(req , res) =>{
+//      res.send("Radha head")
+// })
+// app.options("/radha",(req , res) =>{
+//      res.send("Radha options")
+// })
+
+// app.use("/",(req , res) =>{
+//      res.send("Krishna Krishna")
+// })
 app.listen(3000, ()=>{
     console.log("App is listning at port no 3000");
 })
