@@ -1,17 +1,31 @@
 const express = require("express")
 const app = express();
 
-app.use("/ram",(req , res) =>{
-    return res.send("Ram")
+app.get("/radha",(req , res) =>{
+     res.send("Radha get")
 })
-app.use("/radha",(req , res) =>{
-    return res.send("Radha Radha Rdha")
+app.put("/radha",(req , res) =>{
+     res.send("Radha put")
 })
-app.use("/krishna",(req , res) =>{
-    return res.send("Krishna")
+app.delete("/radha",(req , res) =>{
+     res.send("Sandip delete call")
+})
+app.post("/radha",(req , res) =>{
+     res.send("Radha Post call")
+})
+app.patch("/radha",(req , res) =>{
+     res.send("Radha patch with krishna")
+})
+app.head("/radha",(req , res) =>{
+     res.send("Radha head")
+})
+app.options("/radha",(req , res) =>{
+     res.send("Radha options")
 })
 
-
+app.use("/",(req , res) =>{
+     res.send("Krishna")
+})
 app.listen(3000, ()=>{
     console.log("App is listning at port no 3000");
 })
