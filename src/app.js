@@ -24,7 +24,7 @@ app.options("/radha",(req , res) =>{
 })
 
 app.use("/",(req , res) =>{
-     res.send("Krishna")
+     res.send("Krishna Krishna")
 })
 app.listen(3000, ()=>{
     console.log("App is listning at port no 3000");
