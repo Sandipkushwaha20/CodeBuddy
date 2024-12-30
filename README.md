@@ -1,1 +1,1 @@
-# DevTinder
+# CodeBuddy

@@ -1,7 +1,7 @@
 {
-  "name": "devtinder",
+  "name": "CodeBuddy",
   "version": "1.0.0",
-  "description": "DevTinder",
+  "description": "CodeBuddy",
   "main": "index.js",
   "scripts": {
     "start": "node src/app",
@@ -9,12 +9,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "DevTinder"
+    "url": "CodeBuddy"
   },
   "author": "Sandip Kushwaha",
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.1",
+    "mongoose": "^8.9.2",
     "nodemon": "^3.1.9"
   }
 }
