@@ -11,13 +11,18 @@ app.use(express.json());
 app.post("/signup", async(req , res)=>{
     //Creating a new instance of the User Model
     const user = new User(req.body)
-     
+    // console.log(user.emailId);
     try{
-        await user.save();
-        res.send("User added successfully.");
+        const existingEmail = User.find({emailId: user.emailId});
+        if(existingEmail){
+            res.status(401).send(`You are already registered with this ${user.emailId}. Please try to login!`);
+        }else{
+            await user.save();
+            res.status(201).send("User added successfully.");
+        }
     }catch(err){
         console.log(err);
-        res.send("User not added.",err);
+        res.status(500).send("User not added." + err);
     }
 })
 
@@ -81,12 +86,15 @@ app.patch("/user/updateById", async (req , res) =>{
     console.log("USerID: ", userId, "data: ", data);
 
     try{
-        const user = await User.findByIdAndUpdate(userId , data, {returnDocument:'after'});
+        const user = await User.findByIdAndUpdate(userId , data, {
+            returnDocument:'after',
+            runValidators: true,
+        });
         console.log(user);
         res.send(user);
     }catch(err){
         console.log("User is unable to update by ID.")
-        res.status(500).send("User is unable to update by Id.");
+        res.status(500).send("User is unable to update by Id." + err);
     }
 })
 
