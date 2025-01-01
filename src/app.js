@@ -14,12 +14,14 @@ app.post("/signup", async(req , res)=>{
     // console.log("User data: ",user);  
     try{
         const existingEmail = await User.find({emailId: user.emailId});
-        console.log(existingEmail);
+        // console.log(existingEmail);
         if(existingEmail.length > 0){
             res.status(409).send(`You are already registered with this ${user.emailId}. Please try to login!`);
         }else{
             await user.save(); 
-            res.status(201).send("User added successfully.");
+            // return res.send({user});
+            res.send(201,user);
+            // res.send("hii");
         }
     }catch(err){
         console.log(err);
