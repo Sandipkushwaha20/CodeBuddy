@@ -3,7 +3,7 @@
 CodeBuddy is a MERN stack-based web application designed to connect developers based on shared skills, interests, and profiles. It fosters collaboration, teamwork, and active participation in coding events. Whether you're looking for a project partner, a coding buddy, or a hackathon teammate, CodeBuddy simplifies the process.
 
 ---
-
+ 
 ## Features
 
 - **Developer Matching**: Connect with developers sharing similar skills and interests.
