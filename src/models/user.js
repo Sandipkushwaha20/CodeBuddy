@@ -16,11 +16,6 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        validate(value){
-            if(!validator.isStrongPassword(value)){
-                throw new Error(`Your password: ${value} is invalid.`)
-            }
-        }
     },
     emailId: {
         type: String,

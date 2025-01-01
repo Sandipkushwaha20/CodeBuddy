@@ -3,29 +3,41 @@ const express = require("express");
 const { adminAuth, userAuth } = require("./middlewares/auth");
 const { connectDB } = require("./config/database");
 const User = require("./models/user");
+const validateSignUpData = require("./utils/validation");
+const bcrypt = require('bcrypt');
 const app = express();
 
 //! Middleware for parsing data from JSON formate
 app.use(express.json()); 
 
 app.post("/signup", async(req , res)=>{
-    //Creating a new instance of the User Model
-    const user = new User(req.body)
-    // console.log("User data: ",user);  
     try{
-        const existingEmail = await User.find({emailId: user.emailId});
-        // console.log(existingEmail);
+        validateSignUpData(req);
+        const {firstName,lastName,password,emailId,gender,skills,photoUrl} = req.body;
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        
+        //Creating new instance of the User model
+        const user = new User({
+            firstName,
+            lastName,
+            password: hashedPassword,
+            emailId,
+            gender,
+            skills,
+            photoUrl
+        })
+        //check if user is alredy exist
+        const existingEmail = await User.find({emailId: emailId}); 
         if(existingEmail.length > 0){
-            res.status(409).send(`You are already registered with this ${user.emailId}. Please try to login!`);
-        }else{
-            await user.save(); 
-            // return res.send({user});
-            res.send(201,user);
-            // res.send("hii");
+            throw new Error(`You are already registered with this ${emailId}. Please try to login!`);
         }
+        await user.save(); 
+        return res.send(user);
     }catch(err){
-        console.log(err);
-        res.status(500).send("User not added." + err);
+        console.log("ERROR:  ",err);
+        return res.status(500).send("User not added." + err);
     }
 })
 
