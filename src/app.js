@@ -3,13 +3,14 @@ const express = require("express");
 const { adminAuth, userAuth } = require("./middlewares/auth");
 const { connectDB } = require("./config/database");
 const User = require("./models/user");
-const validateSignUpData = require("./utils/validation");
+const {validateSignUpData, validateloginData} = require("./utils/validation");
 const bcrypt = require('bcrypt');
 const app = express();
 
 //! Middleware for parsing data from JSON formate
 app.use(express.json()); 
 
+//SignUp API
 app.post("/signup", async(req , res)=>{
     try{
         validateSignUpData(req);
@@ -40,6 +41,30 @@ app.post("/signup", async(req , res)=>{
         return res.status(500).send("User not added." + err);
     }
 })
+
+//Login API
+app.post("/login", async(req , res)=>{
+    try{
+        validateloginData(req);
+        const {emailId, password} = req.body;
+        const user = await User.findOne({emailId}); // findOne() will always return an object while find() will always return an array
+        // console.log("User data: ", user);
+        if(!user){
+            return res.status(401).send("You are not registered with this email. Please try to create a account.")
+        }
+        // console.log("Stored Password: ", user[0]?.password);
+        const isPasswordValid = await bcrypt.compare(password, user?.password);
+        // console.log("Pass: ",isPasswordValid);
+        if(!isPasswordValid){
+            return res.status(401).send("Please enter correct password.")
+        }
+
+        return res.status(200).send("User logged in successfully." + user)
+    }catch(err){
+        return res.status(500).send("Unable to login" + err);
+    }
+})
+
 
 //Feed API - GET /feed - get all the data from the DB
 app.get("/feed", async (req, res)=>{
