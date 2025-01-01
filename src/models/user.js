@@ -49,6 +49,12 @@ const userSchema = new mongoose.Schema({
     },
     skills: {
         type: [String], 
+        validate:{
+            validator: function(value){
+                return value.length <= 10;
+            },
+            message: props => `You can only have up to 10 skills, but you provided ${props.value.length}`
+        }
     }
 },{timestamps: true});
 

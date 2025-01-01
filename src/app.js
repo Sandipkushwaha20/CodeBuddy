@@ -6,18 +6,19 @@ const User = require("./models/user");
 const app = express();
 
 //! Middleware for parsing data from JSON formate
-app.use(express.json());
+app.use(express.json()); 
 
 app.post("/signup", async(req , res)=>{
     //Creating a new instance of the User Model
     const user = new User(req.body)
-    // console.log(user.emailId);
+    // console.log("User data: ",user);  
     try{
-        const existingEmail = User.find({emailId: user.emailId});
-        if(existingEmail){
-            res.status(401).send(`You are already registered with this ${user.emailId}. Please try to login!`);
+        const existingEmail = await User.find({emailId: user.emailId});
+        console.log(existingEmail);
+        if(existingEmail.length > 0){
+            res.status(409).send(`You are already registered with this ${user.emailId}. Please try to login!`);
         }else{
-            await user.save();
+            await user.save(); 
             res.status(201).send("User added successfully.");
         }
     }catch(err){
@@ -80,18 +81,29 @@ app.patch("/user/update", async (req , res)=>{
 })
 
 //findByIdAndUpdate user
-app.patch("/user/updateById", async (req , res) =>{
-    const {userId} = req.body;
+app.patch("/user/:id", async (req , res) =>{
+    const userId = req.params?.id;
+    console.log(userId);
     const data = req.body;
-    console.log("USerID: ", userId, "data: ", data);
+    // console.log(data,"  ,  ");
 
     try{
-        const user = await User.findByIdAndUpdate(userId , data, {
-            returnDocument:'after',
-            runValidators: true,
+        const Allowed_Updates = ["firstName","lastName","age","gender","about","skills"];
+        const isUpdateAllowed = Object.keys(data).every((k) =>{
+            // console.log(k,", ");
+            return Allowed_Updates.includes(k);
         });
-        console.log(user);
-        res.send(user);
+        if(!isUpdateAllowed){
+            throw new Error("Update is not allowed");
+        }else{
+            const user = await User.findByIdAndUpdate(userId , data, {
+                returnDocument:'after',
+                runValidators: true,
+            });
+            console.log(user);
+            res.send(user);
+        }
+        
     }catch(err){
         console.log("User is unable to update by ID.")
         res.status(500).send("User is unable to update by Id." + err);
