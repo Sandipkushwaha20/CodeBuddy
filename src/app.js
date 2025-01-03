@@ -5,11 +5,13 @@ const { connectDB } = require("./config/database");
 const User = require("./models/user");
 const {validateSignUpData, validateloginData} = require("./utils/validation");
 const bcrypt = require('bcrypt');
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 const app = express();
 
 //! Middleware for parsing data from JSON formate
 app.use(express.json()); 
-
+app.use(cookieParser());
 //SignUp API
 app.post("/signup", async(req , res)=>{
     try{
@@ -59,12 +61,50 @@ app.post("/login", async(req , res)=>{
             return res.status(401).send("Please enter correct password.")
         }
 
-        return res.status(200).send("User logged in successfully." + user)
+        //Create a JWT Token
+        const token = jwt.sign({
+                _id: user._id
+            },
+            "secret",{expiresIn: 60}
+        );
+        // console.log(token);
+        //Add the token to cookie and send res back to the user
+
+        // const token = "sdklsssdsidseu399--r=ueee8ee8eeueididjdjdj";
+        res.cookie("token", token);
+        
+        return res.status(200).send("User logged in successfully.")
     }catch(err){
         return res.status(500).send("Unable to login" + err);
     }
 })
 
+                                      
+//Profile API
+app.get("/profile", async(req , res)=>{
+    try{
+        const {userId} = req.body;
+        const {token} = req.cookies;
+        
+        if(!userId){
+            throw new Error("User id should be present.");
+        }
+        const user = await User.findById(userId);
+        if(!user){ 
+            throw new Error("User not found");
+        }
+
+        const decodedMessage = jwt.verify(token, "secret");
+        if(!decodedMessage){
+            throw new Error("Token invalid.");
+        }
+        user.password = undefined;
+        return res.status(200).send({user});
+    }catch(err){
+        return res.status(500).send("Error: " + err);
+    }
+    
+})
 
 //Feed API - GET /feed - get all the data from the DB
 app.get("/feed", async (req, res)=>{
@@ -84,6 +124,7 @@ app.get("/feed", async (req, res)=>{
         console.log("user not find");
     }
 })
+                                
 
 //delete a user
 app.delete("/user/delete", async (req , res)=>{
@@ -117,7 +158,7 @@ app.patch("/user/update", async (req , res)=>{
         res.status(500).send("Unable to updated user.");
         console.log("user conn't be updated:  ", err);
     }
-})
+}) 
 
 //findByIdAndUpdate user
 app.patch("/user/:id", async (req , res) =>{
