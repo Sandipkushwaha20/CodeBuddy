@@ -7,7 +7,7 @@ const User = require("../models/user");
 authRouter.post("/signup", async(req , res)=>{
     try{
         validateSignUpData(req);
-        const {firstName,lastName,password,emailId,gender,skills,photoUrl} = req.body;
+        const {firstName,lastName,password,emailId,gender,skills,photoUrl,age} = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -20,7 +20,8 @@ authRouter.post("/signup", async(req , res)=>{
             emailId,
             gender,
             skills,
-            photoUrl
+            photoUrl,
+            age
         })
         //check if user is alredy exist
         const existingEmail = await User.findOne({emailId: emailId}); 
@@ -61,6 +62,17 @@ authRouter.post("/login", async(req , res)=>{
         return res.status(200).send("User logged in successfully.")
     }catch(err){
         return res.status(500).send("Unable to login " + err);
+    }
+})
+
+//Logout API
+authRouter.post("/logout", async(req , res) =>{
+    try{
+        // res.clearCookie("token", {httpOnly: true, secure: true}); //send empty token or you can send token with 0 expiratin time
+       res.cookie("token", null, {expires: new Date(Date.now())});
+        return res.status(200).send("logout successfully");
+    }catch(err){
+        return res.status(500).send("Error: " , "while logout.")
     }
 })
 
