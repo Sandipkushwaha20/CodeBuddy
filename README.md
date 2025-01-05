@@ -23,6 +23,30 @@ CodeBuddy is a MERN stack-based web application designed to connect developers b
 
 ---
 
+## CodeBuddy's APIs
+   ### authRouters
+   - POST => /signup
+   - POST => /login
+   - POST => /logout
+
+   ### profileRouters
+   - GET => /profile/view
+   - PATCH => /profile/edit
+   - PATCH => /profile/password
+
+   ### ConnectinRequestRoutes
+   - POST => /request/send/interested/:userId
+   - POST => /request/send/ignored/:userId
+   - POST => /request/review/accepted/:requestId
+   - POST => /request/review/rejected/:requestId
+
+   ### userRouters
+   - GET => /user/connections
+   - GET => /user/feed    -> get you the profile of other users on platform
+   - GET => /user/requests
+
+---
+
 ## Workflow
 
 1. **User Registration/Login**: Users create and manage profiles.

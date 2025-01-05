@@ -11,6 +11,7 @@ const userAuth = async (req , res , next) =>{
             return res.status(404).send("Error from userAuth Middleware:  Token is not present. Please try to login first.");
         }
         const decodedObj = jwt.verify(token , "secret");
+        // console.log("Decc ",decodedObj);
         if(!decodedObj){
             return res.status(404).send("Token invalid.");
         }
@@ -32,4 +33,4 @@ const userAuth = async (req , res , next) =>{
         return res.status(500).send("ERROR from userAuth Middleware: " + err);
     }
 }
-module.exports = {userAuth}
+module.exports = userAuth
