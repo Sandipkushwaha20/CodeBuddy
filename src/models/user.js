@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt")
+
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -68,4 +71,23 @@ const userSchema = new mongoose.Schema({
     }
 },{timestamps: true});
 
+
+// Here we cann't use arrow function bc it will give error with 'this'
+//this will refer to the current instance
+
+userSchema.methods.getJWT = async function(){
+    const user = this;
+    const token = jwt.sign(
+        {_id: user._id}, "secret", {expiresIn: "7d"}
+    );
+    return token;
+}
+
+
+userSchema.methods.validatePassword = async function(passwordInterByUser){
+    const user = this;
+    const hashedPassword = user.password;
+    const isPasswordValid = await bcrypt.compare(passwordInterByUser, hashedPassword);
+    return isPasswordValid;
+}
 module.exports = mongoose.model("User", userSchema);

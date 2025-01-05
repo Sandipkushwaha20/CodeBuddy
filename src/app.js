@@ -1,12 +1,10 @@
 const express = require("express");
-const validator = require("validator")
 const {userAuth } = require("./middlewares/auth");
 const { connectDB } = require("./config/database");
 const User = require("./models/user");
 const {validateSignUpData, validateloginData} = require("./utils/validation");
 const bcrypt = require('bcrypt');
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
 const app = express();
 
 //! Middleware for parsing data from JSON formate
@@ -56,24 +54,21 @@ app.post("/login", async(req , res)=>{
             return res.status(401).send("You are not registered with this email. Please try to create a account.")
         }
         
-        const isPasswordValid = await bcrypt.compare(password, user?.password);
+        //Validate Password
+        const isPasswordValid = await user.validatePassword(password);
         if(!isPasswordValid){
-            return res.status(401).send("Please enter correct password.")
+            return res.status(400).send("Your password is incorrect. Please try again...");
         }
 
         //Create a JWT Token
-        const token = jwt.sign({
-                _id: user._id
-            },
-            "secret",{expiresIn: '7d'}
-        );
-        
+        const token = await user.getJWT();
+        // console.log("Token", token);
         //Add the token to cookie and send res back to the user
         res.cookie("token", token, {expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), httpOnly: true}); //Expire in 7 days
         
         return res.status(200).send("User logged in successfully.")
     }catch(err){
-        return res.status(500).send("Unable to login" + err);
+        return res.status(500).send("Unable to login " + err);
     }
 })
                            
