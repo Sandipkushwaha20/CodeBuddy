@@ -71,6 +71,9 @@ const userSchema = new mongoose.Schema({
     }
 },{timestamps: true});
 
+// Creating indexes
+// userSchema.index({firstName: 1});
+// userSchema.index({gender: 1});
 
 // Here we cann't use arrow function bc it will give error with 'this'
 //this will refer to the current instance

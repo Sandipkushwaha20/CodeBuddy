@@ -7,9 +7,17 @@ const profileRouter = express.Router();
 profileRouter.get("/profile/view", userAuth, async(req , res)=>{
     try{
         const user = req.user;
-        return res.status(200).send(user);
+        return res.status(200).json({
+            success: true,
+            message: "Profile view.",
+            data: user
+        });
     }catch(err){
-        return res.status(500).send("Error: " + err);
+        return res.status(500).json({
+            success: false,
+            message: "Error during Profile view: " + err,
+            data: user
+        });
     }
     
 })
