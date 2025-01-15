@@ -66,5 +66,50 @@ connectionRoute.post("/request/send/:status/:toUserId", userAuth, async(req , re
     }
 })
 
+connectionRoute.post("/request/review/:status/:requestId", userAuth, async(req , res) =>{
+    try{
+        //loggedIn user
+        const loggedInUser = req.user;
+        const {status, requestId} = req.params;
+
+        //validate status
+        const allowedStatus = ["accepted", "rejected"];
+        if(!allowedStatus.includes(status)){
+            return res.status(400).json({
+                success: false,
+                message: status + " is invalid status."
+            })
+        }
+
+        //validate loggedIn user and toUser is same or not
+        const connectionRequest = await ConnectionRequest.findOne(
+            {_id: requestId,
+            toUserId: loggedInUser._id,
+            status: "interested"
+            }
+        )
+        if(!connectionRequest){
+            return res.status(404).json({
+                successs: false,
+                message: "Connection request not found."
+            })
+        }
+
+        //accept the request and save in DB
+        connectionRequest.status = "accepted";
+        const data = await connectionRequest.save();
+        return res.status(200).json({
+            success: true,
+            message: "Connection request accepted.",
+            data: data
+        })
+    }catch(err){
+        return res.status(500).json({
+            successs: false,
+            message: "Error during request-review: " + err
+        })
+    }
+})
+
 
 module.exports = connectionRoute; 
