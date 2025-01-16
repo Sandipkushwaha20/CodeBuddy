@@ -35,13 +35,13 @@ CodeBuddy is a MERN stack-based web application designed to connect developers b
    - PATCH => /profile/password
 
    ### ConnectinRequestRoutes
-   - POST => /request/send/:status/:userId     => status = ["interested", "ingnored"]
+   - POST => /request/send/:status/:userId     => status = ["interested", "ignored"]
    - POST => /request/review/:status/:requestId    => status = ["accepted", "rejected"]
 
    ### userRouters
+   - GET => /user/requests
    - GET => /user/connections
    - GET => /user/feed    -> get you the profile of other users on platform
-   - GET => /user/requests
 
 ---
 

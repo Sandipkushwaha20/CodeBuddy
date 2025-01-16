@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const connectionRoute = require("./routes/request");
+const userRouter = require("./routes/user");
 const app = express();
 
 //! Middleware for parsing data from JSON formate
@@ -13,7 +14,7 @@ app.use(cookieParser());
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", connectionRoute);
-
+app.use("/", userRouter);
 
 //Most of the time mongoose functions return a promise so use async and await
 connectDB().then(() =>{

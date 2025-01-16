@@ -3,8 +3,11 @@ const userAuth = require("../middlewares/auth")
 const {validateEditProfileData,validateProfileChangePassword} = require("../utils/validation")
 const bcrypt = require("bcrypt");
 const profileRouter = express.Router();
+
+profileRouter.use("/", userAuth);
+
 //Profile view API
-profileRouter.get("/profile/view", userAuth, async(req , res)=>{
+profileRouter.get("/profile/view", async(req , res)=>{
     try{
         const user = req.user;
         return res.status(200).json({
@@ -23,7 +26,7 @@ profileRouter.get("/profile/view", userAuth, async(req , res)=>{
 })
 
 //profile edit API
-profileRouter.patch("/profile/edit", userAuth, async(req , res) =>{
+profileRouter.patch("/profile/edit", async(req , res) =>{
     try{
         validateEditProfileData(req);
         const loggedInUser = req.user;
@@ -42,7 +45,7 @@ profileRouter.patch("/profile/edit", userAuth, async(req , res) =>{
 })
 
 //password change API
-profileRouter.patch("/profile/changePassword", userAuth, async(req , res) =>{
+profileRouter.patch("/profile/changePassword", async(req , res) =>{
     try{
         validateProfileChangePassword(req);
         const user = req.user;

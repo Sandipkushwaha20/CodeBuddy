@@ -4,7 +4,9 @@ const userAuth = require("../middlewares/auth")
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user")
 
-connectionRoute.post("/request/send/:status/:toUserId", userAuth, async(req , res) =>{
+connectionRoute.use("/", userAuth);
+
+connectionRoute.post("/request/send/:status/:toUserId", async(req , res) =>{
     try{
         const fromUserId = req.user._id;
         const toUserId = req.params.toUserId;
@@ -21,7 +23,7 @@ connectionRoute.post("/request/send/:status/:toUserId", userAuth, async(req , re
         }
 
         //check status should be only ["interested", "ignored"]
-        const allowedStatus = ["interested", "ingnored"];
+        const allowedStatus = ["interested", "ignored"];
         if(!allowedStatus.includes(status)){
             return res.status(404).json({
                 success: false,
@@ -66,7 +68,7 @@ connectionRoute.post("/request/send/:status/:toUserId", userAuth, async(req , re
     }
 })
 
-connectionRoute.post("/request/review/:status/:requestId", userAuth, async(req , res) =>{
+connectionRoute.post("/request/review/:status/:requestId", async(req , res) =>{
     try{
         //loggedIn user
         const loggedInUser = req.user;
@@ -110,6 +112,6 @@ connectionRoute.post("/request/review/:status/:requestId", userAuth, async(req ,
         })
     }
 })
-
+ 
 
 module.exports = connectionRoute; 
