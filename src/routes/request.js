@@ -98,7 +98,7 @@ connectionRoute.post("/request/review/:status/:requestId", async(req , res) =>{
         }
 
         //accept the request and save in DB
-        connectionRequest.status = "accepted";
+        connectionRequest.status = status;
         const data = await connectionRequest.save();
         return res.status(200).json({
             success: true,
