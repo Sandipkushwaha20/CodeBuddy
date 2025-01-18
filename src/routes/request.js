@@ -6,7 +6,7 @@ const User = require("../models/user")
 
 connectionRoute.use("/", userAuth);
 
-connectionRoute.post("/request/send/:status/:toUserId", async(req , res) =>{
+connectionRoute.post("/send/:status/:toUserId", async(req , res) =>{
     try{
         const fromUserId = req.user._id;
         const toUserId = req.params.toUserId;
@@ -68,7 +68,7 @@ connectionRoute.post("/request/send/:status/:toUserId", async(req , res) =>{
     }
 })
 
-connectionRoute.post("/request/review/:status/:requestId", async(req , res) =>{
+connectionRoute.post("/review/:status/:requestId", async(req , res) =>{
     try{
         //loggedIn user
         const loggedInUser = req.user;

@@ -12,9 +12,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/", authRouter);
-app.use("/", profileRouter);
-app.use("/", connectionRoute);
-app.use("/", userRouter);
+app.use("/profile", profileRouter);
+app.use("/request", connectionRoute);
+app.use("/user", userRouter);
 
 //Most of the time mongoose functions return a promise so use async and await
 connectDB().then(() =>{

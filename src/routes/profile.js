@@ -4,10 +4,11 @@ const {validateEditProfileData,validateProfileChangePassword} = require("../util
 const bcrypt = require("bcrypt");
 const profileRouter = express.Router();
 
-profileRouter.use("/", userAuth);
+profileRouter.use(userAuth);
+ // "/profile/view",  "/profile/edit",  "/profile/changePassword"
 
-//Profile view API
-profileRouter.get("/profile/view", async(req , res)=>{
+//Profile view API  
+profileRouter.get("/view", async(req , res)=>{
     try{
         const user = req.user;
         return res.status(200).json({
@@ -26,7 +27,7 @@ profileRouter.get("/profile/view", async(req , res)=>{
 })
 
 //profile edit API
-profileRouter.patch("/profile/edit", async(req , res) =>{
+profileRouter.patch("/edit", async(req , res) =>{
     try{
         validateEditProfileData(req);
         const loggedInUser = req.user;
@@ -43,9 +44,9 @@ profileRouter.patch("/profile/edit", async(req , res) =>{
     }
 
 })
-
+ 
 //password change API
-profileRouter.patch("/profile/changePassword", async(req , res) =>{
+profileRouter.patch("/changePassword", async(req , res) =>{
     try{
         validateProfileChangePassword(req);
         const user = req.user;

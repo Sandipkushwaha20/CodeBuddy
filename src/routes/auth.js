@@ -29,10 +29,16 @@ authRouter.post("/signup", async(req , res)=>{
             throw new Error(`You are already registered with this ${emailId}. Please try to login!`);
         }
         await user.save(); 
-        return res.send(user);
+        return res.status(201).json({
+            success: true,
+            message: "You are loggedIn successfully."
+        });
     }catch(err){
         console.log("ERROR:  ",err);
-        return res.status(500).send("User not added." + err);
+        return res.status(500).json({
+            success: false,
+            message: "User not added." + err
+        });
     }
 })
 
@@ -50,7 +56,10 @@ authRouter.post("/login", async(req , res)=>{
         //Validate Password
         const isPasswordValid = await user.validatePassword(password);
         if(!isPasswordValid){
-            return res.status(400).send("Your password is incorrect. Please try again...");
+            return res.status(400).json({
+                success: false,
+                message: "Your password is incorrect. Please try again..."
+            });
         }
 
         //Create a JWT Token
@@ -61,11 +70,13 @@ authRouter.post("/login", async(req , res)=>{
         
         return res.status(200).json({
             success: true,
-            message: "User logged in successfully.",
-            data: user
+            message: "User logged in successfully."
         })
     }catch(err){
-        return res.status(500).send("Unable to login " + err);
+        return res.status(500).json({
+            success: true,
+            message: "Unable to login " + err
+        })
     }
 })
 
@@ -74,9 +85,15 @@ authRouter.post("/logout", async(req , res) =>{
     try{
         // res.clearCookie("token", {httpOnly: true, secure: true}); //send empty token or you can send token with 0 expiratin time
        res.cookie("token", null, {expires: new Date(Date.now())});
-        return res.status(200).send("logout successfully");
+        return res.status(200).json({
+            success: true,
+            message: "logout successfully"
+        });
     }catch(err){
-        return res.status(500).send("Error: " , "while logout.")
+        return res.status(500).josn({
+            success: false,
+            message: "Error: " + "while logout..." + err
+        })
     }
 })
 

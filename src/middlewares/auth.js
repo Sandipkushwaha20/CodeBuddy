@@ -25,7 +25,7 @@ const userAuth = async (req , res , next) =>{
         }
 
         req.user = user;
-        // console.log("USER::: ", req.user);
+        // console.log("USER REQ::: ", req);
 
         next();
 
