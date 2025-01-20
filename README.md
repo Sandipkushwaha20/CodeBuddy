@@ -1,55 +1,46 @@
-# CodeBuddy[Currently Under Development...]
+# CodeBuddy Backend
 
-CodeBuddy is a MERN stack-based web application designed to connect developers based on shared skills, interests, and profiles. It fosters collaboration, teamwork, and active participation in coding events. Whether you're looking for a project partner, a coding buddy, or a hackathon teammate, CodeBuddy simplifies the process.
+CodeBuddy Backend is the server-side component of the CodeBuddy project, a platform designed to connect developers based on shared skills, interests, and profiles. This backend service handles user authentication, profile management, connection requests, and more.
 
 ---
- 
+
 ## Features
 
-- **Developer Matching**: Connect with developers sharing similar skills and interests.
-- **Secure Authentication**: JWT-based authentication ensures user data protection.
-- **State Management**: Efficient user interactions with Redux for seamless state handling.
-- **Responsive UI**: Built with React and DaisyUI for an engaging user experience.
+- **User Authentication**: Secure user registration, login, and logout using JWT.
+- **Profile Management**: Create, view, and edit user profiles.
+- **Connection Requests**: Send, review, and manage connection requests between users.
+- **User Feed**: Display profiles of other users on the platform.
 
 ---
 
 ## Tech Stack
 
-- **Frontend**: React, DaisyUI
 - **Backend**: Node.js, Express
 - **Database**: MongoDB
 - **Authentication**: JWT
-- **State Management**: Redux
 
 ---
 
-## CodeBuddy's APIs
-   ### authRouters
-   - POST => /signup
-   - POST => /login
-   - POST => /logout
+## API Endpoints
 
-   ### profileRouters
-   - GET => /profile/view
-   - PATCH => /profile/edit
-   - PATCH => /profile/password
+### Auth Routes
+- **POST** `/signup`: Register a new user.
+- **POST** `/login`: Login an existing user.
+- **POST** `/logout`: Logout the current user.
 
-   ### ConnectinRequestRoutes
-   - POST => /request/send/:status/:userId     => status = ["interested", "ignored"]
-   - POST => /request/review/:status/:requestId    => status = ["accepted", "rejected"]
+### Profile Routes
+- **GET** `/profile/view`: View the current user's profile.
+- **PATCH** `/profile/edit`: Edit the current user's profile.
+- **PATCH** `/profile/password`: Change the current user's password.
 
-   ### userRouters
-   - GET => /user/requests
-   - GET => /user/connections
-   - GET => /user/feed    -> get you the profile of other users on platform
+### Connection Request Routes
+- **POST** `/request/send/:status/:userId`: Send a connection request to a user. `status` can be `interested` or `ignored`.
+- **POST** `/request/review/:status/:requestId`: Review a connection request. `status` can be `accepted` or `rejected`.
 
----
-
-## Workflow
-
-1. **User Registration/Login**: Users create and manage profiles.
-2. **Profile Matching**: Matches are displayed based on skills and interests.
-3. **Collaboration Hub**: Tools for initiating/joining projects and real-time interactions.
+### User Routes
+- **GET** `/user/requests`: Get the current user's connection requests.
+- **GET** `/user/connections`: Get the current user's connections.
+- **GET** `/user/feed`: Get profiles of other users on the platform.
 
 ---
 
@@ -65,19 +56,45 @@ CodeBuddy is a MERN stack-based web application designed to connect developers b
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Sandipkushwaha20/CodeBuddy.git
-   ```
-2. **Navigate to the project directory**:
-   ```bash
-   cd CodeBuddy
-   ```
-3. **Install dependencies**:
-   ```bash
+   git clone https://github.com/Sandipkushwaha20/CodeBuddy.git   
+   cd CodeBuddy/backend   
    npm install
-   ```
-4. **Start the server**:
-   ```bash
    npm run dev
    ```
 
+### Project Structure
 
+CodeBuddy/
+├── .gitignore
+├── package.json
+├── README.md
+├── src/
+│   ├── app.js
+│   ├── config/
+│   │   └── database.js
+│   ├── middlewares/
+│   │   └── auth.js
+│   ├── models/
+│   │   ├── connectionRequest.js
+│   │   └── user.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── profile.js
+│   │   ├── request.js
+│   │   └── user.js
+│   └── utils/
+│       └── validation.js
+
+### Workflow Diagram
+
+```markdown
+graph TD;
+    A[User Registration/Login] --> B[User Authentication]
+    B --> C[Profile Management]
+    C --> D[Connection Requests]
+    D --> E[User Feed]
+    E --> F[View Other User Profiles]
+    F --> G[Send Connection Requests]
+    G --> H[Review Connection Requests]
+    H --> I[Manage Connections]
+```
