@@ -85,16 +85,16 @@ CodeBuddy/
 │   └── utils/
 │       └── validation.js
 
-### Workflow Diagram
+### 🔄 Workflow Diagram
 
 ```markdown
-graph TD;
-    A[User Registration/Login] --> B[User Authentication]
-    B --> C[Profile Management]
-    C --> D[Connection Requests]
-    D --> E[User Feed]
-    E --> F[View Other User Profiles]
-    F --> G[Send Connection Requests]
-    G --> H[Review Connection Requests]
-    H --> I[Manage Connections]
+graph TD
+A[User Registration/Login] --> B[User Authentication]
+B --> C[Profile Management]
+C --> D[Connection Requests]
+D --> E[User Feed]
+E --> F[View Other User Profiles]
+F --> G[Send Connection Requests]
+G --> H[Review Connection Requests]
+H --> I[Manage Connections]
 ```
