@@ -146,7 +146,3 @@ H --> I[Manage Connections]
 - Developed by: Sandip Kushwaha
 
 ---
-
-## 📚 License
-
-This project is licensed under the MIT License.
